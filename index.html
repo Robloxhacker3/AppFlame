@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AppFlame - Premium IPA Store</title>
+    <style>
+        :root {
+            --bg-color: #0f0f12;
+            --card-bg: #1c1c21;
+            --text-primary: #ffffff;
+            --text-secondary: #8e8e93;
+            --accent-color: #ff5722; /* Flame Orange */
+            --accent-gradient: linear-gradient(135deg, #ff5722, #ff9100);
+            --install-btn-bg: #2c2c35;
+            --install-btn-text: #ffffff;
+            --tab-active: #ffffff;
+            --tab-inactive: #8e8e93;
+            --border-radius: 14px;
+            --nav-height: 80px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            padding-bottom: var(--nav-height);
+            overflow-x: hidden;
+        }
+
+        /* --- iOS Status Bar Simulation --- */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            background-color: rgba(15, 15, 18, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+        .status-icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            font-size: 24px;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand svg {
+            width: 28px;
+            height: 28px;
+            fill: url(#flameGradient);
+        }
+
+        /* --- Tabs Navigation --- */
+        .tabs-container {
+            overflow-x: auto;
+            white-space: nowrap;
+            padding: 0 20px 10px 20px;
+            display: flex;
+            gap: 12px;
+            scrollbar-width: none;
+        }
+        .tabs-container::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--tab-inactive);
+            font-size: 15px;
+            font-weight: 600;
+            padding: 7px 16px;
+            border-radius: 20px;
+            background-color: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .tab-btn.active {
+            background-color: var(--accent-gradient);
+            color: white;
+        }
+
+        /* --- Banners Section (Auto Scroll) --- */
+        .banners-wrapper {
+            padding: 0 20px;
+            margin-bottom: 15px;
+        }
+        .banner-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+            gap: 15px;
+        }
+        .banner-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        .banner-card {
+            min-width: 100%;
+            height: 180px;
+            border-radius: var(--border-radius);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            flex-shrink: 0;
+            scroll-snap-align: center;
+        }
+        .banner-overlay {
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .banner-content {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            z-index: 2;
+        }
+        .banner-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 4px;
+        }
+        .banner-sub {
+            font-size: 12px;
+            color: #ccc;
+        }
+
+        /* --- Section Header --- */
+        .section-header {
+            padding: 5px 20px 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        .section-title span {
+            color: var(--accent-color);
+            font-weight: 300;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-right: 5px;
+        }
+
+        /* --- App List --- */
+        .app-list {
+            padding: 0 20px 20px 20px;
+            display: grid;
+            gap: 12px;
+        }
+        .app-card {
+            display: flex;
+            align-items: center;
+            background-color: var(--card-bg);
+            padding: 10px;
+            border-radius: 12px;
+            transition: transform 0.1s;
+        }
+        .app-card:active {
+            transform: scale(0.98);
+        }
+        .app-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 11px;
+            object-fit: cover;
+            background-color: #333;
+            margin-right: 12px;
+        }
+        .app-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .app-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 3px;
+        }
+        .app-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .action-btn {
+            background-color: var(--install-btn-bg);
+            color: var(--install-btn-text);
+            border: none;
+            padding: 7px 18px;
+            border-radius: 18px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .action-btn:active {
+            opacity: 0.7;
+        }
+
+        /* --- Bottom Navigation --- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(28, 28, 33, 0.95);
+            backdrop-filter: blur(15px);
+            display: flex;
+            justify-content: center;
+            padding: 12px 0 25px 0;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            z-index: 1000;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--accent-color);
+            font-size: 10px;
+            gap: 4px;
+            cursor: pointer;
+            width: 60px;
+        }
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* SVG Gradient Definition */
+        .svg-defs { position: absolute; width: 0; height: 0; }
+
+    </style>
+</head>
+<body>
+
+    <!-- SVG Definitions -->
+    <svg class="svg-defs">
+        <defs>
+            <linearGradient id="flameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ff5722;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#ff9100;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- iOS Status Bar -->
+    <div class="status-bar">
+        <div id="clock">Tue 28 Apr</div>
+        <div class="status-icons">
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="white">
+                <path d="M1 9h2v2H1V9zm4-3h2v5H5V6zm4-3h2v8H9V3zm4-3h2v11h-2V0z"/>
+            </svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="white">
+                <path d="M8 12l-8-9c2.5-2.5 5.5-3 8-3s5.5.5 8 3l-8 9z"/>
+            </svg>
+            <svg width="24" height="12" viewBox="0 0 24 12" fill="white">
+                <rect x="0" y="1" width="18" height="10" rx="2" stroke="white" stroke-width="1" fill="none"/>
+                <rect x="2" y="3" width="14" height="6" rx="1" fill="white"/>
+                <path d="M21 4v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <svg viewBox="0 0 24 24">
+                <path d="M12,23c-3.866,0-7-2.686-7-6s3.134-6,7-6s7,2.686,7,6S15.866,23,12,23z M12,17c-1.657,0-3,1.343-3,3s1.343,3,3,3 s3-1.343,3-3S13.657,17,12,17z"/>
+                <path d="M16.5,8c0-1.5,1.5-3,2.5-3c-1-1.5-2.5-2.5-4.5-2.5C13,2.5,12,4,12,4s-1-1.5-2.5-1.5C7.5,2.5,6,3.5,5,5 c1,0,2.5,1.5,2.5,3c-2,1-3,3-3,5h14C18.5,11,17.5,9,16.5,8z"/>
+            </svg>
+            AppFlame
+        </div>
+        <svg width="24" height="24" fill="#8e8e93" viewBox="0 0 24 24">
+            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+        </svg>
+    </header>
+
+    <!-- Tabs -->
+    <nav class="tabs-container" id="categoryTabs">
+        <!-- Injected via JS -->
+    </nav>
+
+    <!-- Banners (Auto Scroll) -->
+    <section class="banners-wrapper">
+        <div class="banner-carousel" id="bannerCarousel">
+            <!-- Injected via JS -->
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <div class="section-header">
+            <h2 class="section-title"><span>Featured</span>TRENDING</h2>
+        </div>
+
+        <div class="app-list" id="appList">
+            <!-- Injected via JS -->
+        </div>
+    </main>
+
+    <!-- Bottom Navigation (Home Only) -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchNav(this, 'home')">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span>Home</span>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // START JSON DATA CONFIGURATION
+        // ==========================================
+        // Links converted from HTML entities (&amp; -> &) for proper functionality.
+        // AppleJr DNS apps excluded as requested.
+        
+        const appStoreData = {
+            "tabs": ["Featured", "KSign", "e-sign", "Scarlet", "Certificate", "Jailbreak"],
+            "banners": [
+                {
+                    "image_url": "https://i.imgur.com/FZbgJUI.jpeg",
+                    "title": "Delta Executor",
+                    "subtitle": "Free Key Generator"
+                },
+                {
+                    "image_url": "https://i.imgur.com/RHKLBQ7m.jpeg",
+                    "title": "Minecraft",
+                    "subtitle": "Java Edition iOS"
+                },
+                {
+                    "image_url": "https://i.imgur.com/E6yiUxtm.png",
+                    "title": "Delta Executor 2026",
+                    "subtitle": "Get Free Key"
+                }
+            ],
+            "apps": [
+                // --- Featured (Trending) ---
+                {
+                    "name": "Minecraft",
+                    "category": "Featured",
+                    "icon_url": "https://i.imgur.com/RHKLBQ7m.jpeg",
+                    "install_link": "https://youtu.be/qvn5_fRA88A?si=Gdv2A3-PNg-xV16F"
+                },
+                {
+                    "name": "Delta Executor Free Key",
+                    "category": "Featured",
+                    "icon_url": "https://i.imgur.com/E6yiUxtm.png",
+                    "install_link": "https://youtu.be/A_aNfCWZ6ls"
+                },
+                {
+                    "name": "Auto Clicker",
+                    "category": "Featured",
+                    "icon_url": "https://i.imgur.com/iwcjE2xm.png",
+                    "install_link": "https://youtu.be/tsJj330FU4E?si=rA22HPFgvZYpFd4Y"
+                },
+                {
+                    "name": "PlayStation 2 iOS",
+                    "category": "Featured",
+                    "icon_url": "https://i.imgur.com/klEE3S3m.png",
+                    "install_link": "https://youtu.be/yHTRUKp7Y90?si=d7BNlDGE5q2fEPr-"
+                },
+                {
+                    "name": "Apple Music",
+                    "category": "Featured",
+                    "icon_url": "https://i.imgur.com/JTCH5h0m.png",
+                    "install_link": "https://youtu.be/9jw1Q2fU2ho?si=UOPL3av5KK9BnPgE"
+                },
+                {
+                    "name": "iLoader IPA Sign",
+                    "category": "Featured",
+                    "icon_url": "https://i.imgur.com/ExshY6im.png",
+                    "install_link": "https://youtu.be/AzoZ4WFjyNA?si=r8SpZ3HyVMVDg70s"
+                },
+
+                // --- e-sign ---
+                {
+                    "name": "NEW Esign",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/esign-beijing.plist"
+                },
+                {
+                    "name": "NEW Esign (XL)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "https://applejr.net/post/download/gate.html?t=eyJ5IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGFwcGxlanIzNjQ1P3N1Yl9jb25maXJtYXRpb249MSIsImQiOiJpdG1zLXNlcnZpY2VzOi8vP2FjdGlvbj1kb3dubG9hZC1tYW5pZmVzdCZ1cmw9aHR0cHM6Ly9hcHBsZWpyLm5ldC9wb3N0L0VTaWduMTIucGxpc3QifQ"
+                },
+                {
+                    "name": "ESign (XL Axiata)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_5.0.2_XL.plist"
+                },
+                {
+                    "name": "NEW Esign (BOC)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "https://applejr.net/post/download/gate.html?t=eyJ5IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGFwcGxlanIzNjQ1P3N1Yl9jb25maXJtYXRpb249MSIsImQiOiJpdG1zLXNlcnZpY2VzOi8vP2FjdGlvbj1kb3dubG9hZC1tYW5pZmVzdCZ1cmw9aHR0cHM6Ly9hcHBsZWpyLm5ldC9wb3N0L2VzaWduX2JvYzEucGxpc3QifQ"
+                },
+                {
+                    "name": "ESign (Oilwell)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_5.0.2_NOV.plist"
+                },
+                {
+                    "name": "ESign (Vietnam)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_VietnamAirlines.plist"
+                },
+                {
+                    "name": "ESign (ForeverMark)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Forevermark.plist"
+                },
+                {
+                    "name": "Esign (China Academy)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/esignacademy.plist"
+                },
+                {
+                    "name": "Esign (Qingdao)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/qingdao%20esign.plist"
+                },
+                {
+                    "name": "Esign (Election)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_United.plist"
+                },
+                {
+                    "name": "Esign (Guangzhou)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Guangzhou.plist"
+                },
+                {
+                    "name": "Esign (China Telecom)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_ChinaTelecom.plist"
+                },
+                {
+                    "name": "Esign (Chiba Tech)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Chiba.plist"
+                },
+                {
+                    "name": "Esign (Tianjin Univ)",
+                    "category": "e-sign",
+                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Atianjin.plist"
+                },
+
+                // --- KSign ---
+                {
+                    "name": "Ksign (Beijing)",
+                    "category": "KSign",
+                    "icon_url": "https://i.imgur.com/347Q9VHm.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://github.com/haduongyenn-ui/haduongyenn-ui.github.io/raw/refs/heads/main/Plist/ojrma.plist"
+                },
+                {
+                    "name": "Ksign (XL Axiata)",
+                    "category": "KSign",
+                    "icon_url": "https://i.imgur.com/347Q9VHm.png",
+                    "install_link": "https://applejr.net/post/download/gate.html?t=eyJ5IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGFwcGxlanIzNjQ1P3N1Yl9jb25maXJtYXRpb249MSIsImQiOiJpdG1zLXNlcnZpY2VzOi8vP2FjdGlvbj1kb3dubG9hZC1tYW5pZmVzdCZ1cmw9aHR0cHM6Ly9hcHBsZWpyLm5ldC9wb3N0L0tzaWduX1hMLnBsaXN0In0"
+                },
+
+                // --- Scarlet ---
+                {
+                    "name": "Scarlet V2 (XL)",
+                    "category": "Scarlet",
+                    "icon_url": "https://i.imgur.com/5XhsTq9m.png",
+                    "install_link": "https://applejr.net/post/download/gate.html?t=eyJ5IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGFwcGxlanIzNjQ1P3N1Yl9jb25maXJtYXRpb249MSIsImQiOiJpdG1zLXNlcnZpY2VzOi8vP2FjdGlvbj1kb3dubG9hZC1tYW5pZmVzdCZ1cmw9aHR0cHM6Ly9hcHBsZWpyLm5ldC9wb3N0L1NjYXJsZXRBcHBzX1hMLnBsaXN0In0"
+                },
+                {
+                    "name": "Scarlet V2 (Oilwel)",
+                    "category": "Scarlet",
+                    "icon_url": "https://i.imgur.com/5XhsTq9m.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Scarlet_NOV2.plist"
+                },
+                {
+                    "name": "Scarlet V1 (Oilwel)",
+                    "category": "Scarlet",
+                    "icon_url": "https://i.imgur.com/KuehszZm.png",
+                    "install_link": "https://applejr.net/post/download/gate.html?t=eyJ5IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGFwcGxlanIzNjQ1P3N1Yl9jb25maXJtYXRpb249MSIsImQiOiJpdG1zLXNlcnZpY2VzOi8vP2FjdGlvbj1kb3dubG9hZC1tYW5pZmVzdCZ1cmw9aHR0cHM6Ly9hcHBsZWpyLm5ldC9wb3N0L1NjYXJsZXRBcHBzX05PVi5wbGlzdCJ9"
+                },
+                {
+                    "name": "Scarlet (Tianjin)",
+                    "category": "Scarlet",
+                    "icon_url": "https://i.imgur.com/KuehszZm.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.cloud/manual/signed/Scarlet_Tianjin.plist"
+                },
+                {
+                    "name": "Scarlet (Edu)",
+                    "category": "Scarlet",
+                    "icon_url": "https://i.imgur.com/KuehszZm.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.cloud/manual/signed/Scarlet_Education.plist"
+                },
+                {
+                    "name": "Scarlet (Viet)",
+                    "category": "Scarlet",
+                    "icon_url": "https://i.imgur.com/KuehszZm.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.cloud/manual/signed/Scarlet_Viettel.plist"
+                },
+                {
+                    "name": "Scarlet (HDFC)",
+                    "category": "Scarlet",
+                    "icon_url": "https://i.imgur.com/KuehszZm.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.cloud/manual/signed/Scarlet_HDFC.plist"
+                },
+
+                // --- Certificate ---
+                {
+                    "name": "Beijing Zhizhangyi Inc",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Beijing%20Zhizhangyi%20Inc%202.zip"
+                },
+                {
+                    "name": "XL AXIATA, PT TBK",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/XL%20AXIATA,%20PT%20TBK.zip"
+                },
+                {
+                    "name": "Updated National Oilwell",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Updated%20National%20Oilwell%20Varco,%20Inc.zip"
+                },
+                {
+                    "name": "VIETNAM AIRLINES",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/VIETNAM%20AIRLINES%20JSC.zip"
+                },
+                {
+                    "name": "ForeverMark Marketing",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Forevermark%20%20Marketing(Shanghai%20)%20Limited.zip"
+                },
+                {
+                    "name": "PowerChina International",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/PowerChina%20International%20Group%20Limited.zip"
+                },
+                {
+                    "name": "China Academy",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/China%20Academy.zip"
+                },
+                {
+                    "name": "Qingdao Rural",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Qingdao%20Rural%20Commercial%20Bank%20Co.,%20Ltd.zip"
+                },
+                {
+                    "name": "Luoyang Postal",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Luoyang%20Postal%20Administration.zip"
+                },
+                {
+                    "name": "Commission on Election",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Commission%20on%20Elections.zip"
+                },
+                {
+                    "name": "VietinBank",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Vietinbank.zip"
+                },
+                {
+                    "name": "Wasu Media",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/wasu.zip"
+                },
+                {
+                    "name": "Etisalat Emirates",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Etisalat.zip"
+                },
+                {
+                    "name": "Certificate ZIP",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Cert%20AppleJr%203.zip"
+                },
+                {
+                    "name": "Heavy Duty Truck",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Truck.zip"
+                },
+                {
+                    "name": "Guangzhou Huahan",
+                    "category": "Certificate",
+                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
+                    "install_link": "https://github.com/applejr12/signer/raw/refs/heads/main/Guangzhou%20Huahan%20Educational%20&%20Technology%20Co.,Ltd..zip"
+                },
+
+                // --- Jailbreak ---
+                {
+                    "name": "Dopamine",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/N8QVM1jm.jpeg",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/dopamine.plist"
+                },
+                {
+                    "name": "TrollInstallerX",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/t7E5POXm.jpeg",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/trollinstallerx.plist"
+                },
+                {
+                    "name": "Fugu15",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/x630ZiX.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/fugu15.plist"
+                },
+                {
+                    "name": "Xina15",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/nFLU4ERm.jpeg",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/xina15.plist"
+                },
+                {
+                    "name": "Taurine",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/7dLG71Km.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/taurine.plist"
+                },
+                {
+                    "name": "Unc0ver",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/4x2WnzJm.jpeg",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/unc0ver.plist"
+                },
+                {
+                    "name": "Chimera",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/hnoZi02m.jpeg",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/chimera.plist"
+                },
+                {
+                    "name": "Freya",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/JvlhZPrm.png",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/freya.plist"
+                },
+                {
+                    "name": "Phoenix",
+                    "category": "Jailbreak",
+                    "icon_url": "https://i.imgur.com/ZztMJJwm.jpeg",
+                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/phoenix.plist"
+                }
+            ]
+        };
+
+        // ==========================================
+        // END JSON DATA CONFIGURATION
+        // ==========================================
+
+        let activeTab = "Featured";
+
+        function init() {
+            renderTabs();
+            renderBanners();
+            renderApps(activeTab);
+            startClock();
+            startAutoScroll();
+        }
+
+        function renderTabs() {
+            const container = document.getElementById('categoryTabs');
+            container.innerHTML = appStoreData.tabs.map(tab => `
+                <button class="tab-btn ${tab === activeTab ? 'active' : ''}" 
+                        onclick="setTab('${tab}')">
+                    ${tab}
+                </button>
+            `).join('');
+        }
+
+        function renderBanners() {
+            const container = document.getElementById('bannerCarousel');
+            container.innerHTML = appStoreData.banners.map(b => `
+                <div class="banner-card" style="background-image: url('${b.image_url}')">
+                    <div class="banner-overlay"></div>
+                    <div class="banner-content">
+                        <div class="banner-title">${b.title}</div>
+                        <div class="banner-sub">${b.subtitle}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderApps(category) {
+            const container = document.getElementById('appList');
+            
+            // Filter apps based on tab
+            const filteredApps = appStoreData.apps.filter(app => {
+                if (category === "Featured") return true; // Show all on Featured
+                return app.category === category;
+            });
+
+            container.innerHTML = filteredApps.map(app => `
+                <div class="app-card">
+                    <img src="${app.icon_url}" class="app-icon" alt="${app.name}">
+                    <div class="app-info">
+                        <div class="app-name">${app.name}</div>
+                        <div class="app-meta">
+                            <span>${app.category}</span> • 
+                            <span>GET</span>
+                        </div>
+                    </div>
+                    <a href="${app.install_link}" class="action-btn">
+                        Install
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function setTab(tabName) {
+            activeTab = tabName;
+            renderTabs();
+            renderApps(tabName);
+        }
+
+        function startAutoScroll() {
+            const slider = document.getElementById('bannerCarousel');
+            const count = appStoreData.banners.length;
+            let currentIndex = 0;
+
+            setInterval(() => {
+                currentIndex++;
+                if (currentIndex >= count) {
+                    currentIndex = 0;
+                }
+                
+                const element = slider.children[currentIndex];
+                if(element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }
+            }, 3500); 
+        }
+
+        function startClock() {
+            const clockEl = document.getElementById('clock');
+            const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            
+            setInterval(() => {
+                const now = new Date();
+                const dayName = days[now.getDay()];
+                const day = now.getDate();
+                const month = months[now.getMonth()];
+                clockEl.innerText = `${dayName} ${day} ${month}`; 
+            }, 1000);
+        }
+
+        function switchNav(el, page) {
+            // Only Home exists now, so logic is simplified
+        }
+
+        // Start the app
+        window.addEventListener('DOMContentLoaded', init);
+
+    </script>
+</body>
+</html>
