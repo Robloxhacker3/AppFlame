@@ -2,21 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AppFlame - Premium IPA Store</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>AppFlame</title>
+    
+    <!-- PWA / iOS Add to Home Screen Settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="AppFlame">
+    <meta name="theme-color" content="#000000">
+    
+    <!-- Custom Icon (Embedded as Data URI for Flame Logo) -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3R5bGU9InN0b3AtY29sb3I6I2ZmNTcyMjtzdG9wLW9wYWNpdHk6MSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZjkxMDA7c3RvcC1vcGFjaXR5OjEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTAwIiBmaWxsPSIjMDAwMDAwIi8+CiAgPHBhdGggZmlsbD0idXJsKCNnKSIgZD0iTTI1NiwzODZjLTUwLjEsMC05MC43LTMwLjItMTAwLjUtNzMuNGw0MS42LTI1LjhDMjE4LDMzNywyMzcsMzU5LDI1NiwzNTljMTkuNSwwLDM3LjQtNi4zLDUxLjctMTguMmwyNi44LTQxLjZDMzc0LjYsMzU4LjcsMzQ5LjIsMzg2LDI1NiwzODYgeiIvPgogIDxwYXRoIGZpbGw9InVybCgjZykiIGQ9Ik0zNTQuNCwxMjcuOGMwLTE5LjMsMTMuNS0zNi4zLDM1LjYtMzYuM2MyNi44LDAsNDAuOCwxMS44LDQwLjgsMzYuM2MwLDE5LjMtMTMsMzYuMy0zNS42LDM2LjNDNDY0LjIsMTY0LjMsNDUxLjIsMTk5LjMsNDUxLjIsMTk5LjNzLTI0LjYsNTcuOS01Ni4yLDcxLjZsLTM5LjMsMjMuOGwtMjMuOC0zOS4zQzM1NS42LDE4Ni42LDM3NC42LDE0MC43LDM3NC42LDE0MC43eiIvPgogIDxwYXRoIGZpbGw9InVybCgjZykiIGQ9Ik0zMjUuOSw5Ny42QzMyOS44LDk3LjYsMzMzLjksOTguNCwzMzcsOTkuOGwzLjYsLTIuNWMxLjYtMS4yLDMuNS0yLjIsNS41LTIuOWg5Ljl2MjAuM2gtNy4zVjEwMWwtMTQuNyw5LjNjLTEuNSwwLjktMy41LDEuMi01LjIsMS4yYy0yLjksMC01LjYtMS40LTcuOS0zLjRDMzE4LjEsMTA0LjIsMzE3LjIsMTAxLDMzNi4xLDk3LjZ6IiBvcGFjaXR5PSIwLjkiLz4KPC9zdmc+">
+
     <style>
         :root {
-            --bg-color: #0f0f12;
-            --card-bg: #1c1c21;
+            --bg-color: #000000;
+            --card-bg: #121212;
             --text-primary: #ffffff;
-            --text-secondary: #8e8e93;
+            --text-secondary: #888888;
             --accent-color: #ff5722; /* Flame Orange */
             --accent-gradient: linear-gradient(135deg, #ff5722, #ff9100);
-            --install-btn-bg: #2c2c35;
+            --install-btn-bg: #2a2a2a;
             --install-btn-text: #ffffff;
             --tab-active: #ffffff;
-            --tab-inactive: #8e8e93;
-            --border-radius: 14px;
+            --tab-inactive: #555555;
+            --border-radius: 16px;
             --nav-height: 80px;
         }
 
@@ -25,14 +35,71 @@
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-primary);
             padding-bottom: var(--nav-height);
             overflow-x: hidden;
+            /* Hide scrollbar */
+            scrollbar-width: none; 
+        }
+        body::-webkit-scrollbar { display: none; }
+
+        /* --- GATEKEEPER OVERLAYS --- */
+        .gatekeeper-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+        }
+        .gate-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            fill: var(--accent-color);
+        }
+        .gate-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: white;
+        }
+        .gate-desc {
+            font-size: 16px;
+            color: #aaa;
+            margin-bottom: 30px;
+            line-height: 1.5;
+            max-width: 320px;
+        }
+        .gate-btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(255, 87, 34, 0.3);
+        }
+
+        /* --- MAIN CONTENT HIDDEN BY DEFAULT --- */
+        #appStore {
+            display: none; /* Controlled by JS */
         }
 
         /* --- iOS Status Bar Simulation --- */
@@ -43,11 +110,12 @@
             padding: 10px 20px;
             font-size: 14px;
             font-weight: 600;
-            background-color: rgba(15, 15, 18, 0.95);
+            background-color: rgba(0, 0, 0, 0.8);
             position: sticky;
             top: 0;
             z-index: 1000;
             backdrop-filter: blur(10px);
+            padding-top: 20px; /* Safe area for notched devices */
         }
         .status-icons {
             display: flex;
@@ -64,7 +132,7 @@
         }
         .brand {
             font-size: 24px;
-            font-weight: 800;
+            font-weight: 900;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -82,7 +150,7 @@
         .tabs-container {
             overflow-x: auto;
             white-space: nowrap;
-            padding: 0 20px 10px 20px;
+            padding: 0 20px 15px 20px;
             display: flex;
             gap: 12px;
             scrollbar-width: none;
@@ -91,27 +159,27 @@
             display: none;
         }
         .tab-btn {
-            background: none;
-            border: none;
+            background: #1a1a1a;
+            border: 1px solid #333;
             color: var(--tab-inactive);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
-            padding: 7px 16px;
-            border-radius: 20px;
-            background-color: var(--card-bg);
+            padding: 8px 18px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
             flex-shrink: 0;
         }
         .tab-btn.active {
-            background-color: var(--accent-gradient);
+            background: var(--accent-gradient);
             color: white;
+            border: none;
+            box-shadow: 0 4px 12px rgba(255, 87, 34, 0.3);
         }
 
-        /* --- Banners Section (Auto Scroll) --- */
+        /* --- Banners --- */
         .banners-wrapper {
-            padding: 0 20px;
-            margin-bottom: 15px;
+            padding: 0 20px 20px 20px;
         }
         .banner-carousel {
             display: flex;
@@ -119,9 +187,6 @@
             scroll-snap-type: x mandatory;
             scrollbar-width: none;
             gap: 15px;
-        }
-        .banner-carousel::-webkit-scrollbar {
-            display: none;
         }
         .banner-card {
             min-width: 100%;
@@ -131,12 +196,12 @@
             background-position: center;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
             flex-shrink: 0;
             scroll-snap-align: center;
         }
         .banner-overlay {
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
             width: 100%;
             height: 100%;
             position: absolute;
@@ -150,90 +215,102 @@
             z-index: 2;
         }
         .banner-title {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 800;
             color: white;
             margin-bottom: 4px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
         .banner-sub {
-            font-size: 12px;
-            color: #ccc;
+            font-size: 13px;
+            color: #ddd;
+            font-weight: 500;
         }
 
         /* --- Section Header --- */
         .section-header {
-            padding: 5px 20px 15px 20px;
+            padding: 0 20px 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         .section-title {
-            font-size: 18px;
-            font-weight: 700;
+            font-size: 20px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: -0.5px;
         }
         .section-title span {
             color: var(--accent-color);
             font-weight: 300;
-            font-size: 12px;
+            font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-right: 5px;
         }
 
-        /* --- App List --- */
+        /* --- App List (2 Column Grid) --- */
         .app-list {
             padding: 0 20px 20px 20px;
             display: grid;
-            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
         .app-card {
             display: flex;
+            flex-direction: column;
             align-items: center;
             background-color: var(--card-bg);
-            padding: 10px;
-            border-radius: 12px;
-            transition: transform 0.1s;
+            padding: 15px 10px;
+            border-radius: 16px;
+            transition: transform 0.2s, background-color 0.2s;
+            text-align: center;
         }
         .app-card:active {
-            transform: scale(0.98);
+            transform: scale(0.96);
+            background-color: #1a1a1a;
         }
         .app-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 11px;
+            width: 65px;
+            height: 65px;
+            border-radius: 16px;
             object-fit: cover;
-            background-color: #333;
-            margin-right: 12px;
+            background-color: #222;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
         .app-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            width: 100%;
+            margin-bottom: 12px;
         }
         .app-name {
-            font-size: 15px;
-            font-weight: 600;
+            font-size: 14px;
+            font-weight: 700;
             color: white;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 34px;
         }
         .app-meta {
             font-size: 11px;
             color: var(--text-secondary);
         }
         .action-btn {
+            width: 100%;
             background-color: var(--install-btn-bg);
-            color: var(--install-btn-text);
+            color: white;
             border: none;
-            padding: 7px 18px;
-            border-radius: 18px;
+            padding: 8px 0;
+            border-radius: 12px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            transition: background 0.2s;
         }
         .action-btn:active {
             opacity: 0.7;
@@ -245,12 +322,12 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(28, 28, 33, 0.95);
-            backdrop-filter: blur(15px);
+            background-color: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
             display: flex;
             justify-content: center;
-            padding: 12px 0 25px 0;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            padding: 10px 0 25px 0; /* Extra padding for iOS home bar */
+            border-top: 1px solid #222;
             z-index: 1000;
         }
         .nav-item {
@@ -264,8 +341,8 @@
             width: 60px;
         }
         .nav-item svg {
-            width: 24px;
-            height: 24px;
+            width: 26px;
+            height: 26px;
             fill: currentColor;
         }
 
@@ -286,66 +363,101 @@
         </defs>
     </svg>
 
-    <!-- iOS Status Bar -->
-    <div class="status-bar">
-        <div id="clock">Tue 28 Apr</div>
-        <div class="status-icons">
-            <svg width="16" height="12" viewBox="0 0 16 12" fill="white">
-                <path d="M1 9h2v2H1V9zm4-3h2v5H5V6zm4-3h2v8H9V3zm4-3h2v11h-2V0z"/>
-            </svg>
-            <svg width="16" height="12" viewBox="0 0 16 12" fill="white">
-                <path d="M8 12l-8-9c2.5-2.5 5.5-3 8-3s5.5.5 8 3l-8 9z"/>
-            </svg>
-            <svg width="24" height="12" viewBox="0 0 24 12" fill="white">
-                <rect x="0" y="1" width="18" height="10" rx="2" stroke="white" stroke-width="1" fill="none"/>
-                <rect x="2" y="3" width="14" height="6" rx="1" fill="white"/>
-                <path d="M21 4v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
-            </svg>
+    <!-- 1. HOME SCREEN GATEKEEPER OVERLAY -->
+    <div id="homeScreenOverlay" class="gatekeeper-overlay">
+        <svg class="gate-icon" viewBox="0 0 24 24">
+            <path d="M12,23c-3.866,0-7-2.686-7-6s3.134-6,7-6s7,2.686,7,6S15.866,23,12,23z M12,17c-1.657,0-3,1.343-3,3s1.343,3,3,3 s3-1.343,3-3S13.657,17,12,17z"/>
+            <path d="M16.5,8c0-1.5,1.5-3,2.5-3c-1-1.5-2.5-2.5-4.5-2.5C13,2.5,12,4,12,4s-1-1.5-2.5-1.5C7.5,2.5,6,3.5,5,5 c1,0,2.5,1.5,2.5,3c-2,1-3,3-3,5h14C18.5,11,17.5,9,16.5,8z"/>
+        </svg>
+        <div class="gate-title">Install AppFlame</div>
+        <div class="gate-desc">
+            To access the store, you must install this app on your Home Screen.<br><br>
+            Tap the "Share" icon and select <strong>Add to Home Screen</strong>.
         </div>
+        <svg width="30" height="30" viewBox="0 0 50 50" fill="none" stroke="#666" stroke-width="2">
+            <rect x="1" y="1" width="48" height="48" rx="8" />
+            <path d="M10 25h30M25 10v30" />
+        </svg>
     </div>
 
-    <!-- Header -->
-    <header>
-        <div class="brand">
-            <svg viewBox="0 0 24 24">
-                <path d="M12,23c-3.866,0-7-2.686-7-6s3.134-6,7-6s7,2.686,7,6S15.866,23,12,23z M12,17c-1.657,0-3,1.343-3,3s1.343,3,3,3 s3-1.343,3-3S13.657,17,12,17z"/>
-                <path d="M16.5,8c0-1.5,1.5-3,2.5-3c-1-1.5-2.5-2.5-4.5-2.5C13,2.5,12,4,12,4s-1-1.5-2.5-1.5C7.5,2.5,6,3.5,5,5 c1,0,2.5,1.5,2.5,3c-2,1-3,3-3,5h14C18.5,11,17.5,9,16.5,8z"/>
-            </svg>
-            AppFlame
-        </div>
-        <svg width="24" height="24" fill="#8e8e93" viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+    <!-- 2. DISCORD GATEKEEPER OVERLAY -->
+    <div id="discordOverlay" class="gatekeeper-overlay" style="display: none;">
+        <svg width="60" height="60" viewBox="0 0 24 24" fill="#5865F2">
+            <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
         </svg>
-    </header>
+        <div class="gate-title" style="margin-top: 15px;">Join Community</div>
+        <div class="gate-desc">
+            Access to the AppFlame Store is restricted to community members. Please join the Discord server to get verified.
+        </div>
+        <a href="https://discord.gg/7UR4EWauZY" target="_blank" class="gate-btn">Join Discord</a>
+        <br><br>
+        <button onclick="confirmDiscord()" style="background:none; border:none; color:#555; font-size:14px;">I've Already Joined</button>
+    </div>
 
-    <!-- Tabs -->
-    <nav class="tabs-container" id="categoryTabs">
-        <!-- Injected via JS -->
-    </nav>
+    <!-- MAIN APP CONTAINER -->
+    <div id="appStore">
 
-    <!-- Banners (Auto Scroll) -->
-    <section class="banners-wrapper">
-        <div class="banner-carousel" id="bannerCarousel">
+        <!-- iOS Status Bar -->
+        <div class="status-bar">
+            <div id="clock">Tue 28 Apr</div>
+            <div class="status-icons">
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="white">
+                    <path d="M1 9h2v2H1V9zm4-3h2v5H5V6zm4-3h2v8H9V3zm4-3h2v11h-2V0z"/>
+                </svg>
+                <svg width="16" height="12" viewBox="0 0 16 12" fill="white">
+                    <path d="M8 12l-8-9c2.5-2.5 5.5-3 8-3s5.5.5 8 3l-8 9z"/>
+                </svg>
+                <svg width="24" height="12" viewBox="0 0 24 12" fill="white">
+                    <rect x="0" y="1" width="18" height="10" rx="2" stroke="white" stroke-width="1" fill="none"/>
+                    <rect x="2" y="3" width="14" height="6" rx="1" fill="white"/>
+                    <path d="M21 4v4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12,23c-3.866,0-7-2.686-7-6s3.134-6,7-6s7,2.686,7,6S15.866,23,12,23z M12,17c-1.657,0-3,1.343-3,3s1.343,3,3,3 s3-1.343,3-3S13.657,17,12,17z"/>
+                    <path d="M16.5,8c0-1.5,1.5-3,2.5-3c-1-1.5-2.5-2.5-4.5-2.5C13,2.5,12,4,12,4s-1-1.5-2.5-1.5C7.5,2.5,6,3.5,5,5 c1,0,2.5,1.5,2.5,3c-2,1-3,3-3,5h14C18.5,11,17.5,9,16.5,8z"/>
+                </svg>
+                AppFlame
+            </div>
+            <svg width="24" height="24" fill="#555" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+        </header>
+
+        <!-- Tabs -->
+        <nav class="tabs-container" id="categoryTabs">
             <!-- Injected via JS -->
-        </div>
-    </section>
+        </nav>
 
-    <!-- Main Content -->
-    <main>
-        <div class="section-header">
-            <h2 class="section-title"><span>Featured</span>TRENDING</h2>
-        </div>
+        <!-- Banners -->
+        <section class="banners-wrapper">
+            <div class="banner-carousel" id="bannerCarousel">
+                <!-- Injected via JS -->
+            </div>
+        </section>
 
-        <div class="app-list" id="appList">
-            <!-- Injected via JS -->
-        </div>
-    </main>
+        <!-- Main Content -->
+        <main>
+            <div class="section-header">
+                <h2 class="section-title"><span>Featured</span>TRENDING</h2>
+            </div>
 
-    <!-- Bottom Navigation (Home Only) -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchNav(this, 'home')">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span>Home</span>
+            <div class="app-list" id="appList">
+                <!-- Injected via JS -->
+            </div>
+        </main>
+
+        <!-- Bottom Navigation (Home Only) -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="switchNav(this, 'home')">
+                <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                <span>Home</span>
+            </div>
         </div>
     </div>
 
@@ -353,11 +465,9 @@
         // ==========================================
         // START JSON DATA CONFIGURATION
         // ==========================================
-        // Links converted from HTML entities (&amp; -> &) for proper functionality.
-        // AppleJr DNS apps excluded as requested.
         
         const appStoreData = {
-            "tabs": ["Featured", "KSign", "e-sign", "Scarlet", "Certificate", "Jailbreak"],
+            "tabs": ["Featured", "KSign", "e-sign", "Scarlet", "Certificate", "DNS", "Jailbreak"],
             "banners": [
                 {
                     "image_url": "https://i.imgur.com/FZbgJUI.jpeg",
@@ -384,7 +494,7 @@
                     "install_link": "https://youtu.be/qvn5_fRA88A?si=Gdv2A3-PNg-xV16F"
                 },
                 {
-                    "name": "Delta Executor Free Key",
+                    "name": "Delta Executor",
                     "category": "Featured",
                     "icon_url": "https://i.imgur.com/E6yiUxtm.png",
                     "install_link": "https://youtu.be/A_aNfCWZ6ls"
@@ -396,7 +506,7 @@
                     "install_link": "https://youtu.be/tsJj330FU4E?si=rA22HPFgvZYpFd4Y"
                 },
                 {
-                    "name": "PlayStation 2 iOS",
+                    "name": "PS2 iOS",
                     "category": "Featured",
                     "icon_url": "https://i.imgur.com/klEE3S3m.png",
                     "install_link": "https://youtu.be/yHTRUKp7Y90?si=d7BNlDGE5q2fEPr-"
@@ -408,7 +518,7 @@
                     "install_link": "https://youtu.be/9jw1Q2fU2ho?si=UOPL3av5KK9BnPgE"
                 },
                 {
-                    "name": "iLoader IPA Sign",
+                    "name": "iLoader IPA",
                     "category": "Featured",
                     "icon_url": "https://i.imgur.com/ExshY6im.png",
                     "install_link": "https://youtu.be/AzoZ4WFjyNA?si=r8SpZ3HyVMVDg70s"
@@ -416,7 +526,7 @@
 
                 // --- e-sign ---
                 {
-                    "name": "NEW Esign",
+                    "name": "NEW Esign (Beijing)",
                     "category": "e-sign",
                     "icon_url": "https://i.imgur.com/ptoEbcym.png",
                     "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/esign-beijing.plist"
@@ -434,12 +544,6 @@
                     "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_5.0.2_XL.plist"
                 },
                 {
-                    "name": "NEW Esign (BOC)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "https://applejr.net/post/download/gate.html?t=eyJ5IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGFwcGxlanIzNjQ1P3N1Yl9jb25maXJtYXRpb249MSIsImQiOiJpdG1zLXNlcnZpY2VzOi8vP2FjdGlvbj1kb3dubG9hZC1tYW5pZmVzdCZ1cmw9aHR0cHM6Ly9hcHBsZWpyLm5ldC9wb3N0L2VzaWduX2JvYzEucGxpc3QifQ"
-                },
-                {
                     "name": "ESign (Oilwell)",
                     "category": "e-sign",
                     "icon_url": "https://i.imgur.com/ptoEbcym.png",
@@ -452,52 +556,10 @@
                     "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_VietnamAirlines.plist"
                 },
                 {
-                    "name": "ESign (ForeverMark)",
+                    "name": "ESign (Forever)",
                     "category": "e-sign",
                     "icon_url": "https://i.imgur.com/ptoEbcym.png",
                     "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Forevermark.plist"
-                },
-                {
-                    "name": "Esign (China Academy)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/esignacademy.plist"
-                },
-                {
-                    "name": "Esign (Qingdao)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/qingdao%20esign.plist"
-                },
-                {
-                    "name": "Esign (Election)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_United.plist"
-                },
-                {
-                    "name": "Esign (Guangzhou)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Guangzhou.plist"
-                },
-                {
-                    "name": "Esign (China Telecom)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_ChinaTelecom.plist"
-                },
-                {
-                    "name": "Esign (Chiba Tech)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Chiba.plist"
-                },
-                {
-                    "name": "Esign (Tianjin Univ)",
-                    "category": "e-sign",
-                    "icon_url": "https://i.imgur.com/ptoEbcym.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/Esign_Atianjin.plist"
                 },
 
                 // --- KSign ---
@@ -508,7 +570,7 @@
                     "install_link": "itms-services://?action=download-manifest&url=https://github.com/haduongyenn-ui/haduongyenn-ui.github.io/raw/refs/heads/main/Plist/ojrma.plist"
                 },
                 {
-                    "name": "Ksign (XL Axiata)",
+                    "name": "Ksign (XL)",
                     "category": "KSign",
                     "icon_url": "https://i.imgur.com/347Q9VHm.png",
                     "install_link": "https://applejr.net/post/download/gate.html?t=eyJ5IjoiaHR0cHM6Ly93d3cueW91dHViZS5jb20vQGFwcGxlanIzNjQ1P3N1Yl9jb25maXJtYXRpb249MSIsImQiOiJpdG1zLXNlcnZpY2VzOi8vP2FjdGlvbj1kb3dubG9hZC1tYW5pZmVzdCZ1cmw9aHR0cHM6Ly9hcHBsZWpyLm5ldC9wb3N0L0tzaWduX1hMLnBsaXN0In0"
@@ -540,18 +602,6 @@
                     "install_link": "itms-services://?action=download-manifest&url=https://applejr.cloud/manual/signed/Scarlet_Tianjin.plist"
                 },
                 {
-                    "name": "Scarlet (Edu)",
-                    "category": "Scarlet",
-                    "icon_url": "https://i.imgur.com/KuehszZm.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.cloud/manual/signed/Scarlet_Education.plist"
-                },
-                {
-                    "name": "Scarlet (Viet)",
-                    "category": "Scarlet",
-                    "icon_url": "https://i.imgur.com/KuehszZm.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.cloud/manual/signed/Scarlet_Viettel.plist"
-                },
-                {
                     "name": "Scarlet (HDFC)",
                     "category": "Scarlet",
                     "icon_url": "https://i.imgur.com/KuehszZm.png",
@@ -560,19 +610,19 @@
 
                 // --- Certificate ---
                 {
-                    "name": "Beijing Zhizhangyi Inc",
+                    "name": "Beijing Zhizhangyi",
                     "category": "Certificate",
                     "icon_url": "https://i.imgur.com/aEL0qKhm.png",
                     "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Beijing%20Zhizhangyi%20Inc%202.zip"
                 },
                 {
-                    "name": "XL AXIATA, PT TBK",
+                    "name": "XL AXIATA",
                     "category": "Certificate",
                     "icon_url": "https://i.imgur.com/aEL0qKhm.png",
                     "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/XL%20AXIATA,%20PT%20TBK.zip"
                 },
                 {
-                    "name": "Updated National Oilwell",
+                    "name": "National Oilwell",
                     "category": "Certificate",
                     "icon_url": "https://i.imgur.com/aEL0qKhm.png",
                     "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Updated%20National%20Oilwell%20Varco,%20Inc.zip"
@@ -584,16 +634,10 @@
                     "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/VIETNAM%20AIRLINES%20JSC.zip"
                 },
                 {
-                    "name": "ForeverMark Marketing",
+                    "name": "ForeverMark",
                     "category": "Certificate",
                     "icon_url": "https://i.imgur.com/aEL0qKhm.png",
                     "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Forevermark%20%20Marketing(Shanghai%20)%20Limited.zip"
-                },
-                {
-                    "name": "PowerChina International",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/PowerChina%20International%20Group%20Limited.zip"
                 },
                 {
                     "name": "China Academy",
@@ -601,59 +645,31 @@
                     "icon_url": "https://i.imgur.com/aEL0qKhm.png",
                     "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/China%20Academy.zip"
                 },
+
+                // --- DNS ---
                 {
-                    "name": "Qingdao Rural",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Qingdao%20Rural%20Commercial%20Bank%20Co.,%20Ltd.zip"
+                    "name": "AppleJr DNS",
+                    "category": "DNS",
+                    "icon_url": "https://i.imgur.com/yQ9U0Lzm.png",
+                    "install_link": "https://d1yei2z3i6k35z.cloudfront.net/14890634/68f7bbc35c7c2_signed_AppleJrV22.mobileconfig"
                 },
                 {
-                    "name": "Luoyang Postal",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Luoyang%20Postal%20Administration.zip"
+                    "name": "Fl00m DNS",
+                    "category": "DNS",
+                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg", // Generic Wifi icon
+                    "install_link": "https://fl00m.dev/dns"
                 },
                 {
-                    "name": "Commission on Election",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Commission%20on%20Elections.zip"
+                    "name": "Pegasus DNS",
+                    "category": "DNS",
+                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "install_link": "https://pegasus-ota.pw/pegasus.mobileconfig"
                 },
                 {
-                    "name": "VietinBank",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Vietinbank.zip"
-                },
-                {
-                    "name": "Wasu Media",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/wasu.zip"
-                },
-                {
-                    "name": "Etisalat Emirates",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Etisalat.zip"
-                },
-                {
-                    "name": "Certificate ZIP",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Cert%20AppleJr%203.zip"
-                },
-                {
-                    "name": "Heavy Duty Truck",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/Truck.zip"
-                },
-                {
-                    "name": "Guangzhou Huahan",
-                    "category": "Certificate",
-                    "icon_url": "https://i.imgur.com/aEL0qKhm.png",
-                    "install_link": "https://github.com/applejr12/signer/raw/refs/heads/main/Guangzhou%20Huahan%20Educational%20&%20Technology%20Co.,Ltd..zip"
+                    "name": "Sileo DNS",
+                    "category": "DNS",
+                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "install_link": "https://apt.sileo.app/dns"
                 },
 
                 // --- Jailbreak ---
@@ -676,12 +692,6 @@
                     "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/fugu15.plist"
                 },
                 {
-                    "name": "Xina15",
-                    "category": "Jailbreak",
-                    "icon_url": "https://i.imgur.com/nFLU4ERm.jpeg",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/xina15.plist"
-                },
-                {
                     "name": "Taurine",
                     "category": "Jailbreak",
                     "icon_url": "https://i.imgur.com/7dLG71Km.png",
@@ -698,18 +708,6 @@
                     "category": "Jailbreak",
                     "icon_url": "https://i.imgur.com/hnoZi02m.jpeg",
                     "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/chimera.plist"
-                },
-                {
-                    "name": "Freya",
-                    "category": "Jailbreak",
-                    "icon_url": "https://i.imgur.com/JvlhZPrm.png",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/freya.plist"
-                },
-                {
-                    "name": "Phoenix",
-                    "category": "Jailbreak",
-                    "icon_url": "https://i.imgur.com/ZztMJJwm.jpeg",
-                    "install_link": "itms-services://?action=download-manifest&url=https://applejr.net/post/applejr-panel/public/plist/phoenix.plist"
                 }
             ]
         };
@@ -721,11 +719,38 @@
         let activeTab = "Featured";
 
         function init() {
-            renderTabs();
-            renderBanners();
-            renderApps(activeTab);
-            startClock();
-            startAutoScroll();
+            checkAccess();
+        }
+
+        function checkAccess() {
+            // 1. Check if running in Standalone mode (Added to Home Screen)
+            const isStandalone = window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches;
+
+            if (!isStandalone) {
+                document.getElementById('homeScreenOverlay').style.display = 'flex';
+                return;
+            }
+
+            // 2. Check if Discord verification passed
+            const hasJoined = localStorage.getItem('discord_joined');
+
+            if (!hasJoined) {
+                document.getElementById('discordOverlay').style.display = 'flex';
+            } else {
+                // 3. If both checks pass, render the app
+                document.getElementById('appStore').style.display = 'block';
+                renderTabs();
+                renderBanners();
+                renderApps(activeTab);
+                startClock();
+                startAutoScroll();
+            }
+        }
+
+        function confirmDiscord() {
+            localStorage.setItem('discord_joined', 'true');
+            document.getElementById('discordOverlay').style.display = 'none';
+            checkAccess();
         }
 
         function renderTabs() {
@@ -754,11 +779,15 @@
         function renderApps(category) {
             const container = document.getElementById('appList');
             
-            // Filter apps based on tab
             const filteredApps = appStoreData.apps.filter(app => {
-                if (category === "Featured") return true; // Show all on Featured
+                if (category === "Featured") return true;
                 return app.category === category;
             });
+
+            if (filteredApps.length === 0) {
+                 container.innerHTML = `<div style="grid-column: 1/-1; text-align:center; color:#555; padding:20px;">No apps in this category.</div>`;
+                 return;
+            }
 
             container.innerHTML = filteredApps.map(app => `
                 <div class="app-card">
@@ -766,12 +795,11 @@
                     <div class="app-info">
                         <div class="app-name">${app.name}</div>
                         <div class="app-meta">
-                            <span>${app.category}</span> • 
-                            <span>GET</span>
+                            ${app.category}
                         </div>
                     </div>
                     <a href="${app.install_link}" class="action-btn">
-                        Install
+                        GET
                     </a>
                 </div>
             `).join('');
@@ -816,7 +844,7 @@
         }
 
         function switchNav(el, page) {
-            // Only Home exists now, so logic is simplified
+            // Home only active
         }
 
         // Start the app
