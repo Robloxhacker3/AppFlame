@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AppFlame</title>
     
-    <!-- PWA Settings -->
+    <!-- Google Site Verification -->
+    <meta name="google-site-verification" content="google1bdcc5461c1fe54b.html" />
+    
+    <!-- PWA / iOS Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="AppFlame">
@@ -13,6 +16,10 @@
     
     <!-- Custom Icon -->
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZyIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCIgc3R5bGU9InN0b3AtY29sb3I6I2ZmNTcyMjtzdG9wLW9wYWNpdHk6MSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZjkxMDA7c3RvcC1vcGFjaXR5OjEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTAwIiBmaWxsPSIjMDAwMDAwIi8+CiAgPHBhdGggZmlsbD0idXJsKCNnKSIgZD0iTTI1NiwzODZjLTUwLjEsMC05MC43LTMwLjItMTAwLjUtNzMuNGw0MS42LTI1LjhDMjE4LDMzNywyMzcsMzU5LDI1NiwzNTljMTkuNSwwLDM3LjQtNi4zLDUxLjctMTguMmwyNi44LTQxLjZDMzc0LjYsMzU4LjcsMzQ5LjIsMzg2LDI1NiwzODYgeiIvPgogIDxwYXRoIGZpbGw9InVybCgjZykiIGQ9Ik0zNTQuNCwxMjcuOGMwLTE5LjMsMTMuNS0zNi4zLDM1LjYtMzYuM2MyNi44LDAsNDAuOCwxMS44LDQwLjgsMzYuM2MwLDE5LjMtMTMsMzYuMy0zNS42LDM2LjNDNDY0LjIsMTY0LjMsNDUxLjIsMTk5LjMsNDUxLjIsMTk5LjctMjQuNiw1Ny45LTU2LjIsNzEuNmwzOS4zLDIzLjhsMjMuOC0zOS4zQzM1NS42LDE4Ni42LDM3NC42LDE0MC43LDM3NC42LDE0MC43eiIvPgogIDxwYXRoIGZpbGw9InVybCgjZykiIGQ9Ik0zMjUuOSw5Ny42QzMyOS44LDk3LjYsMzMzLjksOTguNCwzMzcsOTkuOGwzLjYtMi41YzEuNi0xLjIsMy41LTIuMiw1LjUtMi45aDkuOXYyMC4zaC03LjNWMTAxbC0xNC43LDkuM2MtMS41LDAuOS0zLjUsMS4yLTUuMiwxLjJjLTIuOSwwLTUuNi0xLjQtNy45LTMuNEMzMTguMSwxMDQuMiwzMTcuMiwxMDEsMzM2LjEsOTcuNnoiIG9wYWNpdHk9IjAuOSIvPgo8L3N2Zz4=">
+
+    <!-- Google AdSense Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7601925052503417"
+     crossorigin="anonymous"></script>
 
     <style>
         :root {
@@ -44,6 +51,56 @@
             min-height: 100vh;
         }
         body::-webkit-scrollbar { display: none; }
+
+        /* --- AD OVERLAY --- */
+        .ad-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .ad-container {
+            width: 100%;
+            max-width: 400px;
+            background: #111;
+            padding: 20px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            margin-bottom: 20px;
+        }
+        .ad-text {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        .countdown-btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 700;
+            width: 100%;
+            cursor: not-allowed;
+            opacity: 0.5;
+            transition: all 0.3s;
+        }
+        .countdown-btn.active {
+            cursor: pointer;
+            opacity: 1;
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.4);
+        }
 
         /* --- DISCORD GATEKEEPER OVERLAY --- */
         .gatekeeper-overlay {
@@ -165,8 +222,8 @@
             color: var(--text-secondary);
             font-size: 13px;
             font-weight: 700;
-            padding: 9px 18px;
-            border-radius: 20px;
+            padding: 8px 16px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s ease;
             flex-shrink: 0;
@@ -174,10 +231,10 @@
             align-items: center;
             gap: 8px;
         }
-        .tab-btn svg {
+        .tab-btn img {
             width: 16px;
             height: 16px;
-            fill: currentColor;
+            object-fit: contain;
         }
         .tab-btn.active {
             background: var(--accent-gradient);
@@ -259,7 +316,7 @@
             letter-spacing: 1px;
         }
 
-        /* --- APP LIST (2 LAYER GRID LIKE IMAGE) --- */
+        /* --- APP LIST (2 LAYER GRID) --- */
         .app-list {
             padding: 0 20px 20px 20px;
             display: grid;
@@ -388,8 +445,29 @@
 </head>
 <body>
 
-    <!-- 1. DISCORD GATEKEEPER OVERLAY -->
-    <div id="discordOverlay" class="gatekeeper-overlay">
+    <!-- 1. AD GATEKEEPER OVERLAY -->
+    <div id="adOverlay" class="ad-overlay" style="display: none;">
+        <div class="ad-container">
+            <!-- Google AdSense Ad Unit (Replace data-ad-slot with your specific Slot ID if needed) -->
+            <ins class="adsbygoogle"
+                 style="display:block; text-align:center;"
+                 data-ad-layout="in-article"
+                 data-ad-format="fluid"
+                 data-full-width-responsive="true"
+                 data-ad-client="ca-pub-7601925052503417"
+                 data-ad-slot="1234567890"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        <div class="ad-text">Support AppFlame - Watch Ad to Continue</div>
+        <button id="adTimerBtn" class="countdown-btn" disabled>
+            Wait 15s
+        </button>
+    </div>
+
+    <!-- 2. DISCORD GATEKEEPER OVERLAY -->
+    <div id="discordOverlay" class="gatekeeper-overlay" style="display: none;">
         <svg class="gate-icon" viewBox="0 0 24 24" fill="#5865F2">
             <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/>
         </svg>
@@ -470,7 +548,15 @@
         // ==========================================
         
         const appStoreData = {
-            "tabs": ["Featured", "KSign", "e-sign", "Scarlet", "Certificate", "DNS", "Jailbreak"],
+            "tabs": [
+                {"name": "Featured", "icon_url": "https://img.icons8.com/color/96/star--v1.png"}, 
+                {"name": "KSign", "icon_url": "https://cdn-icons-png.flaticon.com/512/6877/6877470.png"},
+                {"name": "e-sign", "icon_url": "https://cdn-icons-png.flaticon.com/512/5631/5631821.png"},
+                {"name": "Scarlet", "icon_url": "https://cdn-icons-png.flaticon.com/512/2907/2907264.png"},
+                {"name": "Certificate", "icon_url": "https://cdn-icons-png.flaticon.com/512/2062/2062913.png"},
+                {"name": "DNS", "icon_url": "https://cdn-icons-png.flaticon.com/512/3917/3917282.png"},
+                {"name": "Jailbreak", "icon_url": "https://cdn-icons-png.flaticon.com/512/3226/3226106.png"}
+            ],
             "banners": [
                 {
                     "image_url": "https://i.imgur.com/FZbgJUI.jpeg",
@@ -680,7 +766,7 @@
                     "install_link": "https://github.com/royilkom-alt/cert/raw/refs/heads/main/China%20Academy.zip"
                 },
 
-                // --- DNS (Expanded List) ---
+                // --- DNS (With Specific Icons) ---
                 {
                     "name": "AppleJr DNS",
                     "category": "DNS",
@@ -691,56 +777,56 @@
                 {
                     "name": "AppValley DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://static.wikia.nocookie.net/appvalley/images/8/88/AppleValley_Icon.png/revision/latest?cb=20190619063609",
                     "rating": "• Fast",
                     "install_link": "https://avd.ios/mobileconfig"
                 },
                 {
                     "name": "Fl00m DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://i.imgur.com/qoCpI8R.png",
                     "rating": "• Popular",
                     "install_link": "https://fl00m.dev/dns"
                 },
                 {
                     "name": "Pegasus DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://i.imgur.com/9j9I5p7.png",
                     "rating": "• Stable",
                     "install_link": "https://pegasus-ota.pw/pegasus.mobileconfig"
                 },
                 {
                     "name": "Sileo DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://i.imgur.com/F2zUy9G.png",
                     "rating": "• Trusted",
                     "install_link": "https://apt.sileo.app/dns"
                 },
                 {
                     "name": "Buypass DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://i.imgur.com/aXJwq7c.png",
                     "rating": "• No Revokes",
                     "install_link": "https://buypass.me/dns"
                 },
                 {
                     "name": "iPASigner DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://i.imgur.com/qgSd8eD.png",
                     "rating": "• Secure",
                     "install_link": "https://ipasigner.me/dns"
                 },
                 {
                     "name": "Panda Helper DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://i.imgur.com/hJv3j8E.png",
                     "rating": "• Game Friendly",
                     "install_link": "https://pandahelp.vip/dns"
                 },
                 {
                     "name": "Scarlet DNS",
                     "category": "DNS",
-                    "icon_url": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Wi-Fi_logo.svg",
+                    "icon_url": "https://i.imgur.com/5XhsTq9m.png",
                     "rating": "• Scarlet Only",
                     "install_link": "https://scarlet.mobi/dns"
                 },
@@ -799,27 +885,28 @@
 
         let activeTab = "Featured";
 
-        // Icon Map for Tabs
-        const tabIcons = {
-            "Featured": "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z",
-            "KSign": "M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z",
-            "e-sign": "M3 17.25V21h3.75L17.8 9.95l-3.75-3.75L3 17.25z M20.7 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z",
-            "Scarlet": "M12 2L1.5 9l10.5 7 10.5-7L12 2zM1.5 15l10.5 7 10.5-7",
-            "Certificate": "M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z",
-            "DNS": "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.73l-2.54-1.15c-.42-.19-.68-.6-.68-1.06v-.87c1.57-.94 2.5-2.46 2.5-4.09 0-.34-.02-.67-.06-1H19l-2-2-2 2h-1v1l-2 2v2h-2v2H8v2H6v2h12v-2h-2v-2h-2v-2l2-2h1l2-2 2 2h1.94c-.04-.33-.06-.66-.06-1 .09-3.12-.62-5.78-2.17-7.58z",
-            "Jailbreak": "M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"
-        };
-
         function init() {
-            // No home screen check needed anymore, just discord check
             checkAccess();
         }
 
         function checkAccess() {
             const hasJoined = localStorage.getItem('discord_joined');
+            const hasWatchedAd = localStorage.getItem('ad_watched');
 
-            if (hasJoined === 'true') {
+            if (hasJoined !== 'true') {
+                // Show Discord Overlay
+                document.getElementById('discordOverlay').style.display = 'flex';
+                document.getElementById('appStore').style.display = 'none';
+            } else if (hasWatched !== 'true') {
+                // Discord joined, show Ad Overlay
                 document.getElementById('discordOverlay').style.display = 'none';
+                document.getElementById('adOverlay').style.display = 'flex';
+                document.getElementById('appStore').style.display = 'none';
+                startAdTimer();
+            } else {
+                // All done, load App
+                document.getElementById('discordOverlay').style.display = 'none';
+                document.getElementById('adOverlay').style.display = 'none';
                 document.getElementById('appStore').style.display = 'block';
                 renderApp();
             }
@@ -834,16 +921,35 @@
             
             // 2. Update UI
             btn.disabled = true;
-            btn.style.display = 'none'; // Hide button
+            btn.style.display = 'none'; 
             txt.innerHTML = "Joined! Verifying access... <br><span style='color:#ff5722; font-size:14px'>Please wait 3 seconds</span>";
 
             // 3. Timer
             setTimeout(() => {
                 localStorage.setItem('discord_joined', 'true');
-                document.getElementById('discordOverlay').style.display = 'none';
-                document.getElementById('appStore').style.display = 'block';
-                renderApp();
+                checkAccess();
             }, 3000);
+        }
+
+        function startAdTimer() {
+            const btn = document.getElementById('adTimerBtn');
+            let timeLeft = 15;
+            
+            const interval = setInterval(() => {
+                timeLeft--;
+                btn.innerText = `Wait ${timeLeft}s`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    btn.innerText = "Continue to AppFlame";
+                    btn.classList.add('active');
+                    btn.disabled = false;
+                    btn.onclick = function() {
+                        localStorage.setItem('ad_watched', 'true');
+                        checkAccess();
+                    };
+                }
+            }, 1000);
         }
 
         function renderApp() {
@@ -856,11 +962,12 @@
 
         function renderTabs() {
             const container = document.getElementById('categoryTabs');
+            // Now uses icon_url from JSON tabs array
             container.innerHTML = appStoreData.tabs.map(tab => `
-                <button class="tab-btn ${tab === activeTab ? 'active' : ''}" 
-                        onclick="setTab('${tab}')">
-                    <svg viewBox="0 0 24 24"><path d="${tabIcons[tab]}"/></svg>
-                    ${tab}
+                <button class="tab-btn ${tab.name === activeTab ? 'active' : ''}" 
+                        onclick="setTab('${tab.name}')">
+                    <img src="${tab.icon_url}" />
+                    ${tab.name}
                 </button>
             `).join('');
         }
